@@ -8,36 +8,34 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 */6 * * *'  
+    - cron: '0 */6 * * *'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [20.x]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Install FFmpeg
-      run: sudo apt-get install -y ffmpeg
+      - name: Install FFmpeg
+        run: sudo apt-get install -y ffmpeg
 
-    - name: Start application with timeout
-      run: |
-        timeout 21590s npm start  # Limits run to 5h 59m 50s
+      - name: Start application with timeout
+        run: |
+          echo "Démarrage de l'application avec timeout"
+          timeout 2155s npm start
 
-    - name: Save state (Optional)
-      run: |
-        ./save_state.sh
+      - name: Save state (Optional)
+        run: ./save_state.sh
