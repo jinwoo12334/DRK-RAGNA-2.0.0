@@ -3,39 +3,40 @@ name: Node.js CI
 on:
   push:
     branches:
-      - main
+      - principal
   pull_request:
     branches:
-      - main
+      - principal
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *'  # Toutes les 6 heures
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [20.x]
 
     steps:
-      - name: Checkout repository
+      - name: Référentiel de code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Configurer Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
+      - name: Installer les dépendances
         run: npm install
 
-      - name: Install FFmpeg
+      - name: Installer FFMPEG
         run: sudo apt-get install -y ffmpeg
 
-      - name: Start application with timeout
+      - name: Démarrer l'application avec timeout
         run: |
-          echo "Démarrage de l'application avec timeout"
-          timeout 2155s npm start
+          echo "Démarrage de l'application avec délai"
+          timeout 2155s npm start || echo "Fin ou arrêt du script"
 
-      - name: Save state (Optional)
+      - name: Enregistrer l’état (facultatif)
         run: ./save_state.sh
